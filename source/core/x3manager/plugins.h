@@ -22,9 +22,9 @@
 
 BEGIN_NAMESPACE_X3
 
-typedef bool (*EventDispatcher)(PROC handler, void* data);
-typedef bool (*ObjectEventDispatcher)(ObserverObject*, ON_EVENT, void* data);
-typedef bool (*Creator)(const char*, long, IObject**);
+using EventDispatcher = bool (*)(PROC handler, void* data);
+using ObjectEventDispatcher = bool (*)(ObserverObject*, ON_EVENT, void* data);
+using Creator = bool (*)(const char*, long, IObject**);
 
 class IRegister : public IObject
 {

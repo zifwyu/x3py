@@ -29,12 +29,36 @@ private:
     virtual int unloadExtraPlugins();
 };
 
-static std::vector<HMODULE> _plns;
+static std::vector<HMODULE> _plns; //静态vector变量，存储已经加载的插件模块的句柄
 static long                 _loading = 0;
 
-XBEGIN_DEFINE_MODULE()
-    XDEFINE_CLASSMAP_ENTRY_Singleton(CManager)
-XEND_DEFINE_MODULE_DLL()
+///////////// 宏展开////////////
+//XBEGIN_DEFINE_MODULE()
+//    XDEFINE_CLASSMAP_ENTRY_Singleton(CManager)
+//XEND_DEFINE_MODULE_DLL()
+///////////// 宏展开////////////
+static const x3::ClassEntry s_classes[] = 
+{
+    x3::ClassEntry(x3::MIN_SINGLETON_TYPE, "SingletonObject<" "CManager" ">", CManager::_getClassID(), (x3::ObjectCreator)(&x3::SingletonObject<CManager>::create), (x3::HASIID)(&x3::SingletonObject<CManager>::hasInterface)),
+    x3::ClassEntry() 
+}; 
+const x3::ClassEntry* const x3::ClassEntry::classes[] = 
+{ 
+    s_classes, 0 
+}; 
+extern "C" BOOL __stdcall DllMain(HANDLE hmod, DWORD dwReason, LPVOID) 
+{
+    if (dwReason == 1) 
+    {
+        return ::x3InitPlugin((HMODULE)hmod, 0);
+    }
+    else if (dwReason == 0) 
+    {
+        ::x3FreePlugin();
+    } 
+    return 1;
+}
+///////////// 宏展开////////////
 
 OUTAPI bool x3InitializePlugin()
 {
@@ -116,17 +140,34 @@ OUTAPI HMODULE unixFindModule(const char* filename)
 }
 #endif // UNIX
 
+/**
+* @brief 加载插件DLL
+* @param[in] filename 插件DLL的绝对路径
+* @param[in] ext 扩展名校验，只有ext为".pln"，才会加载
+* @return 一直为true
+* @todo 当不加载时，是否应返回false
+* @note 
+*/
 static bool loadfilter(const char* filename, const char* ext)
 {
+    // _stricmp(ext, ".pln") 字符串比较，两字符串相等返回0，这里是对扩展名做校验
+    // PathFindFileNameA(filename) 根据文件绝对路径，获取文件名
+    // GetModuleHandleA 获取某插件的句柄，返回NULL说明没有加载该插件
     if (_stricmp(ext, ".pln") == 0
         && GetModuleHandleA(PathFindFileNameA(filename)) == NULL)
     {
         HMODULE hmod = x3LoadLibrary(filename);
 
+        // GetProcAddress 根据DLL句柄和函数名称，找到DLL中导出函数的函数地址        
         if (hmod && GetProcAddress(hmod, "x3InitializePlugin"))
+        {
+            // 插件DLL中存在导出函数"x3InitializePlugin"，才会加载
             _plns.push_back(hmod);
+        }            
         else if (hmod)
+        {
             x3FreeLibrary(hmod);
+        }           
     }
     return true;
 }
@@ -138,6 +179,7 @@ int CManager::loadExtraPlugins(const char* folder)
     int from = (int)_plns.size();
     int ret = 0;
 
+    //路径处理，得到插件所在文件夹的绝对路径
     GetModuleFileNameA(getModuleHandle(), path, MAX_PATH);
     PathRemoveFileSpecA(path);
     PathRemoveFileSpecA(path);
@@ -146,11 +188,15 @@ int CManager::loadExtraPlugins(const char* folder)
     x3::scanfiles(loadfilter, path, true);
     locker.Unlock();
 
+    //遍历刚刚新加载的插件模块句柄
     for (int i = from; i < (int)_plns.size(); i++)
     {
-        typedef bool (*INITF)();
+        //获取插件中导出函数"x3InitializePlugin"的函数指针
+        using INITF = bool (*)();
         INITF init = (INITF)GetProcAddress(_plns[i], "x3InitializePlugin");
 
+        //函数指针存在 且调用该函数返回false，就将插件释放
+        // 所以每个插件刚被加载，就会调一次其"x3InitializePlugin"函数
         if (init && !init())
         {
             x3FreeLibrary(_plns[i]);
@@ -158,6 +204,7 @@ int CManager::loadExtraPlugins(const char* folder)
         }
         else
         {
+            // Q 这里有问题呀，若函数指针不存在，也会走这个逻辑？
             ret++;
         }
     }
@@ -193,9 +240,16 @@ int CManager::unloadExtraPlugins()
     return count;
 }
 
+/**
+* @brief 加载某路径下的所有插件模块
+* @param[in] folder 插件所在的文件夹名称（只有一个文件夹名称，不是绝对路径）
+*/
 OUTAPI int x3LoadPlugins(const char* folder)
 {
+    //在IPlugins接口的实现类中，找到UUID为clsidManager的类，将其实例化，获取其实例化对象的指针
     Object<IPlugins> reg(clsidManager);
+
+    // 若reg不为空，则调用其对象的loadExtraPlugins函数加载插件，返回加载插件的数量；若reg为空，返回0
     return SafeCallIf(reg, loadExtraPlugins(folder), 0);
 }
 

@@ -6,8 +6,8 @@
 
 BEGIN_NAMESPACE_X3
 
-typedef IObject* (*ObjectCreator)(long iid);
-typedef bool (*HASIID)(long iid);
+using ObjectCreator = IObject* (*)(long iid);
+using HASIID = bool (*)(long iid);
 enum { MIN_SINGLETON_TYPE = 10 };
 
 class ClassEntry

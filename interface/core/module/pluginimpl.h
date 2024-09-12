@@ -187,7 +187,7 @@ LOCALAPI bool createObject(const char* clsid, long iid, IObject** p)
 {
     if (!x3InternalCreate(clsid, iid, p) && s_manager)
     {
-        typedef bool (*F)(const char*, long, IObject**);
+        using F = bool (*)(const char*, long, IObject**);
         F f = (F)GetProcAddress(s_manager, "x3CreateObject");
         return f && f(clsid, iid, p);
     }

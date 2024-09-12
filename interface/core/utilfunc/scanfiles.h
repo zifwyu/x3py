@@ -10,6 +10,13 @@
 
 namespace x3 {
 
+/**
+* @brief 加载文件夹下的所有插件
+* @param[in] filter 函数指针，该函数可根据插件的绝对路径进行加载
+* @param[in] path 插件所在的文件夹
+* @param[in] recursive 是否递归加载子文件夹中的插件
+* @return 返回加载插件的总数量
+*/
 inline int scanfiles(bool (*filter)(const char* filename, const char* ext), 
                      const char* path, bool recursive)
 {
@@ -18,6 +25,8 @@ inline int scanfiles(bool (*filter)(const char* filename, const char* ext),
     bool cancel = false;
 
 #ifdef _WIN32
+    //lstrcpynA 字符串拷贝
+    // PathAppendA 字符串拼接,会自动在中间插入\\，得到插件文件夹\\*.*
     lstrcpynA(filename, path, MAX_PATH);
     PathAppendA(filename, "*.*");
 
@@ -27,28 +36,36 @@ inline int scanfiles(bool (*filter)(const char* filename, const char* ext),
 
     for (; loop && !cancel; loop = ::FindNextFileA(hfind, &fd))
     {
+        //若fd是隐藏文件或系统文件
         if (fd.dwFileAttributes & (FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_SYSTEM))
-        {
+        {           
         }
-        else if (fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+        else if (fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)//若fd是文件夹
         {
-            if (fd.cFileName[0] != '.')
+            if (fd.cFileName[0] != '.')//若不是隐藏文件夹
             {
+                //如果fd是文件夹，就进行字符串拼接，获取文件夹绝对路径
                 lstrcpynA(filename, path, MAX_PATH);
                 PathAppendA(filename, fd.cFileName);
                 PathAddBackslashA(filename);
 
+                //这里传入文件夹路径，肯定加载不成功，但函数会恒定返回true，再取反就是false
+                // Q 这里为什么要做这样的动作呢？调用一次有什么意义呢？
                 cancel = !filter(filename, "");
                 if (recursive && !cancel)
                 {
+                    //递归调用，加载插件
                     count += scanfiles(filter, filename, recursive);
                 }
             }
         }
         else
         {
+            //字符串拼接，得到插件DLL的绝对路径
             lstrcpynA(filename, path, MAX_PATH);
             PathAppendA(filename, fd.cFileName);
+
+            //根据绝对路径加载插件，函数函数会恒定返回true，再取反就是false
             cancel = !filter(filename, PathFindExtensionA(filename));
             count++;
         }

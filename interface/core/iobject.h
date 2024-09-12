@@ -23,11 +23,24 @@ public: \
     virtual ~_Interface() {}         \
     static const char* getInterfaceName() { return #_Interface; }   \
     static long getIID() { static long iid = x3::_hashkey(#_Interface); return iid; } \
-    typedef void dummy
+    using dummy = void
 
 class IObject
 {
-    X3DEFINE_IID(IObject);
+    //X3DEFINE_IID(IObject); 宏展开-strat
+public: 
+    virtual ~IObject() {} 
+    static const char* getInterfaceName() 
+    {
+        return "IObject";
+    } 
+    static long getIID() 
+    {
+        static long iid = x3::_hashkey("IObject"); 
+        return iid;
+    } 
+    using dummy = void;
+    //X3DEFINE_IID(IObject); 宏展开-end
 #ifndef SWIG
     virtual long retainObject() const = 0;
     virtual long releaseObject() const = 0;

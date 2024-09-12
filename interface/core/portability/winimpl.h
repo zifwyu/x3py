@@ -15,8 +15,14 @@ bool x3FreeLibrary(HMODULE hdll)
     return !!FreeLibrary(hdll);
 }
 
+/**
+* @brief 显示加载DLL，并返回其句柄
+* @param[in] filename DLL文件名
+* @return 加载成功，则返回其句柄；加载失败，则返回NULL
+*/
 HMODULE x3LoadLibrary(const char* filename)
 {
+    // LoadLibraryExA 显示加载DLL
     HMODULE hdll = LoadLibraryExA(filename, NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
 
 #ifdef __GNUC__
