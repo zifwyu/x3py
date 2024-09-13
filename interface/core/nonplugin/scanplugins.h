@@ -102,9 +102,18 @@ void unloadScanPlugins()
 #define CREATEOBJECTIMPL
 
 class IObject;
+/**
+* @brief 创建接口的实现类的对象
+* @param[in] clsid 实现类的UUID
+* @param[in] iid 接口的唯一标识
+* @param[out] 创建出的实现类的指针的指针
+*/
 LOCALAPI bool createObject(const char* clsid, long iid, IObject** p)
 {
-    typedef bool (*F)(const char*, long, IObject**);
+    using F = bool (*)(const char*, long, IObject**);
+
+    // Q s_modules[0]应该一直是插件管理器的句柄？
+    // 这是是调用插件管理器的"x3CreateObject"函数？
     F f = (F)GetProcAddress(s_modules[0], "x3CreateObject");
     return f && f(clsid, iid, p);
 }

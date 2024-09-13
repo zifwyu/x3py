@@ -48,11 +48,11 @@ const x3::ClassEntry* const x3::ClassEntry::classes[] =
 }; 
 extern "C" BOOL __stdcall DllMain(HANDLE hmod, DWORD dwReason, LPVOID) 
 {
-    if (dwReason == 1) 
+    if (dwReason == DLL_PROCESS_ATTACH) //进程创建的时候调用
     {
         return ::x3InitPlugin((HMODULE)hmod, 0);
     }
-    else if (dwReason == 0) 
+    else if (dwReason == DLL_PROCESS_DETACH) //进程结束的时候调用
     {
         ::x3FreePlugin();
     } 
@@ -92,6 +92,12 @@ OUTAPI bool x3UnregisterPlugin(Creator creator)
     return needFree;
 }
 
+/**
+* @brief 创建接口的实现类的对象
+* @param[in] clsid 实现类的UUID
+* @param[in] iid 接口的唯一标识
+* @param[out] 创建出的实现类的指针的指针
+*/
 OUTAPI bool x3CreateObject(const char* clsid, long iid, IObject** p)
 {
     if (x3InternalCreate(clsid, iid, p))

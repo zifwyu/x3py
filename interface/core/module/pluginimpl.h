@@ -13,7 +13,7 @@
 BEGIN_NAMESPACE_X3
 
 static HMODULE  s_hmod = NULL;
-static HMODULE  s_manager = NULL;
+static HMODULE  s_manager = NULL; //插件管理器的句柄
 static bool     s_loadmgr = false;
 static long     s_refcount = 0;
 
@@ -80,6 +80,12 @@ static bool getDefaultClassID(long iid, const char*& clsid)
     return false;
 }
 
+/**
+* @brief 创建接口的实现类的对象
+* @param[in] clsid 实现类的UUID
+* @param[in] iid 接口的唯一标识
+* @param[out] 创建出的实现类的指针的指针
+*/
 OUTAPI bool x3InternalCreate(const char* clsid, long iid, IObject** p)
 {
     *p = NULL;
@@ -154,6 +160,8 @@ OUTAPI bool x3InitPlugin(HMODULE hmod, HMODULE hmanager)
 
     s_hmod = hmod;
 
+    //如果没有加载插件管理器，就加载一下
+    //s_manager始终代表插件管理器的句柄
     if (!s_manager)
     {
         hmanager = hmanager ? hmanager : GetModuleHandleA(X3MANAGER_PLNAME);
@@ -167,10 +175,12 @@ OUTAPI bool x3InitPlugin(HMODULE hmod, HMODULE hmanager)
 
     bool needInit = true;
 
+    //s_hmod代表当前模块的句柄
+    //当前模块不是插件管理器模块，就调用插件管理器的"x3RegisterPlugin"函数
     if (s_manager && s_manager != s_hmod)
     {
-        typedef bool (*CF)(const char*, long, IObject**);
-        typedef bool (*RF)(CF, HMODULE, const char**);
+        using CF = bool (*)(const char*, long, IObject**);
+        using RF = bool (*)(CF, HMODULE, const char**);
         RF freg = (RF)GetProcAddress(s_manager, "x3RegisterPlugin");
 
         const char* clsids[X3_CLASS_MAXCOUNT + 1] = { NULL };

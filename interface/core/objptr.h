@@ -14,6 +14,12 @@ struct NullPointerError {};
 #endif
 #endif // SWIG
 
+/**
+* @brief 智能指针模板类
+* @note 通过使用智能指针模板类 x3::Object 来使用插件接口，自动处理引用计数。
+* x3::Object模板类通过x3::createObject函数去调用 x3CreateObject 导出函数来创建对象。
+* 如果插件自身的 x3InternalCreate 不能创建对象，则再转给插件管理器，由后者根据类ID查找对应插件，然后调用对应插件的 x3InternalCreate 函数。
+*/
 template <class I> class Object
 {
 public:
