@@ -31,6 +31,8 @@ public:
     }
 
     // see XEND_DEFINE_MODULE, XEND_DEFINE_MODULE_LIB
+    // 类的静态成员变量，是一个静态数组，数组中的元素是ClassEntry*
+    // 第一个const说明数组中的成员不能变更，第二个const说明数组本身不能变更
     static const ClassEntry* const  classes[];
 };
 

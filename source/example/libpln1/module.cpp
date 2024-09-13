@@ -5,5 +5,5 @@
 #include "libpln1.h"
 
 XBEGIN_DEFINE_MODULE()
-    XDEFINE_CLASSMAP_ENTRY(CSimpleA)
+x3::ClassEntry(1, "NormalObject<" "CSimpleA" ">", CSimpleA::_getClassID(), (x3::ObjectCreator)(&x3::NormalObject<CSimpleA>::create), (x3::HASIID)(&x3::NormalObject<CSimpleA>::hasInterface)),
 XEND_DEFINE_MODULE_LIB(libpln1)

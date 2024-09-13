@@ -80,7 +80,7 @@ int loadScanPlugins(const char* folder = "plugins")
     // 若函数指针不为空，则运行该函数，即调用模块管理器中的x3LoadPlugins函数，参数为所有模块DLL所在的文件夹路径
     int extcount = fload ? fload(folder) : 0;
     
-    if (!fload) // load plugins regardless the x3manager plugin.
+    if (!fload) // 无论 x3manager 插件如何，都加载插件。
         x3::scanfiles(loadfilter, path, true);
 
     return s_nmods + extcount;

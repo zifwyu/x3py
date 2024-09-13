@@ -183,6 +183,12 @@ OUTAPI bool x3InitPlugin(HMODULE hmod, HMODULE hmanager)
 
 #ifndef CREATEOBJECTIMPL
 #define CREATEOBJECTIMPL
+/**
+* @brief 创建接口的实现类的对象
+* @param[in] clsid 实现类的唯一标识
+* @param[in] iid 接口的IID
+* @param[out] p 创建出对象的指针的指针
+*/
 LOCALAPI bool createObject(const char* clsid, long iid, IObject** p)
 {
     if (!x3InternalCreate(clsid, iid, p) && s_manager)

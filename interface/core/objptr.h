@@ -18,6 +18,12 @@ template <class I> class Object
 {
 public:
     // if clsid is "" then the actual class id will be used just in the current plugin.
+    //如果 clsid 是""，那么实际的类 id 将仅在当前插件中使用。
+
+    /**
+    * @brief 构造函数
+    * @param[in] clsid 接口的实现类的唯一标识
+    */
     Object(const char* clsid) : _p((I*)0)
     {
         createObject(clsid, I::getIID(), address());

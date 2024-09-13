@@ -172,6 +172,11 @@ static bool loadfilter(const char* filename, const char* ext)
     return true;
 }
 
+/**
+* @brief 加载管理器模块路径/folder/下的所有插件
+* @param[in] folder 插件所在路径
+* @return 返回加载插件的数量
+*/
 int CManager::loadExtraPlugins(const char* folder)
 {
     char path[MAX_PATH];
