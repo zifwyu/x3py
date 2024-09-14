@@ -96,7 +96,7 @@ OUTAPI bool x3UnregisterPlugin(Creator creator)
 * @brief 创建接口的实现类的对象
 * @param[in] clsid 实现类的UUID
 * @param[in] iid 接口的唯一标识
-* @param[out] 创建出的实现类的指针的指针
+* @param[out] p 创建出的实现类的指针的指针
 */
 OUTAPI bool x3CreateObject(const char* clsid, long iid, IObject** p)
 {

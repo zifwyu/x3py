@@ -74,8 +74,8 @@ private:
     typedef std::pair<Creator, HMODULE> Plugin;
     typedef hash_multimap<std::string, Creator> CreatorMap;
     typedef std::pair<std::string, Creator> CreatorPair;
-    LockRW_<std::vector<Plugin> >               _plugins;
-    LockRW_<CreatorMap>                         _clsmap;
+    LockRW_<std::vector<Plugin> >               _plugins; //已经注册过的插件DLL句柄和构造函数，并且是带读写锁的vector
+    LockRW_<CreatorMap>                         _clsmap; //已经注册的构造函数和唯一标识
 
     struct ObserverItem {
         Creator         creator;

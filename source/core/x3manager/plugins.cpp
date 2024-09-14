@@ -43,6 +43,7 @@ bool CPlugins::registerPlugin(Creator creator, HMODULE hmod, const char** clsids
     bool needInit = true;
     LockRW locker(_plugins.locker, true);
 
+    //如果在已注册的句柄和构造函数中没有当前句柄，就将当前句柄和构造函数保存
     if (locker.canWrite() && find_value(_plugins, Plugin(creator, hmod)) < 0)
     {
         _plugins.push_back(Plugin(creator, hmod));
