@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Interface Files">
+      <UniqueIdentifier>{517625E8-3653-47B2-8F30-C4B355E1120B}</UniqueIdentifier>
+      <Extensions>i</Extensions>
+    </Filter>
+    <Filter Include="Interface Files\module">
+      <UniqueIdentifier>{6e8b0716-4b60-4222-85c4-fe6b05e3c4bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface Files\nonplugin">
+      <UniqueIdentifier>{4631ac95-37ef-4051-b371-a388747a6f50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interface Files\portability">
+      <UniqueIdentifier>{e55ef7f7-f0a8-4c51-93c9-d090ec3ef75d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\source\core\x3manager\module.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\core\x3manager\plugins.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\core\x3manager\workpath.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\source\core\x3manager\plugins.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\source\core\x3manager\workpath.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interface\core\manager\iplugins.h">
+      <Filter>Interface Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interface\core\manager\iworkpath.h">
+      <Filter>Interface Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interface\core\manager\x3manager.h">
+      <Filter>Interface Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interface\core\module\classentry.h">
+      <Filter>Interface Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interface\core\module\classmacro.h">
+      <Filter>Interface Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interface\core\iobject.h">
+      <Filter>Interface Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interface\core\module\moduleitem.h">
+      <Filter>Interface Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interface\core\module\modulemacro.h">
+      <Filter>Interface Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interface\core\module\normalobject.h">
+      <Filter>Interface Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interface\core\objptr.h">
+      <Filter>Interface Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interface\core\module\pluginimpl.h">
+      <Filter>Interface Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interface\core\module\plugininc.h">
+      <Filter>Interface Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interface\core\module\singletonobj.h">
+      <Filter>Interface Files\module</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interface\core\utilfunc\loadmodule.h">
+      <Filter>Interface Files\nonplugin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interface\core\nonplugin\scanplugins.h">
+      <Filter>Interface Files\nonplugin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interface\core\nonplugin\swigext.h">
+      <Filter>Interface Files\nonplugin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interface\core\nonplugin\useplugin.h">
+      <Filter>Interface Files\nonplugin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interface\core\nonplugin\useplugins.h">
+      <Filter>Interface Files\nonplugin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interface\core\portability\func_s.h">
+      <Filter>Interface Files\portability</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interface\core\portability\pathstr.h">
+      <Filter>Interface Files\portability</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interface\core\portability\portimpl.h">
+      <Filter>Interface Files\portability</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interface\core\portability\uniximpl.h">
+      <Filter>Interface Files\portability</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interface\core\portability\winimpl.h">
+      <Filter>Interface Files\portability</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interface\core\portability\x3port.h">
+      <Filter>Interface Files\portability</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interface\core\portability\x3unix.h">
+      <Filter>Interface Files\portability</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\interface\core\portability\x3win.h">
+      <Filter>Interface Files\portability</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
